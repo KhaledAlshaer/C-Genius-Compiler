@@ -1,4 +1,5 @@
 #include "compiler.h"
+
 /*
 change child paramter to root for link parser tree
 */
@@ -10,9 +11,13 @@ ExpressionNode *create_expression_node(Token token, ExpressionNode *root)
 		perror("Failed to allocate memory for ExpressionNode");
 		exit(EXIT_FAILURE);
 	}
-	root->child = node;
+	if (root != NULL)
+	{
+		root->child = node;
+	}
 	node->token = token;
 	node->next = NULL;
+	node->child = NULL;
 	return (node);
 }
 
@@ -27,7 +32,11 @@ TokenNode *create_token_node(Token token, TokenNode *prev)
 	}
 
 	node->token = token;
-	prev->next = node;
+	node->next = NULL;
+	if (prev != NULL)
+	{
+		prev->next = node;
+	}
 
 	return (node);
 }
@@ -89,18 +98,18 @@ void parse_return()
 
 					if (strcmp(tokens[TokenIndex].value, ";") == 0)
 					{
-						// printf(";\n");
 						TokenIndex++;
 						ExpressionNode *child;
 						TokenNode *cur;
 						TokenNode *prev;
 
-						Token token_exit = {EXIT, NULL};
+						Token token_exit = {EXIT, "EXIT"};
 						child = create_expression_node(token_exit, root);
-						prev = create_token_node(token_exit, child->next);
-						for (int i = start_token; i < TokenIndex; i++)
+						child->next = create_token_node(tokens[start_token], NULL);
+						prev = child->next;
+						for (int i = start_token + 1; i < TokenIndex; i++)
 						{
-							cur = create_token_node(tokens[start_token], prev);
+							cur = create_token_node(tokens[i], prev);
 							prev = cur;
 						}
 						printf("Correct Return Statment horaaaaay!!\n");
