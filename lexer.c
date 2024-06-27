@@ -90,14 +90,11 @@ void lexer(FILE *file) {
                     word[i] = '\0';
                     add_token(TOKEN_LITERAL_INT, word);
 
-                    return(token);
                 } else if (isspace(ch))
                 {
                     continue;
                 } else {
                     add_token(TOKEN_UNKNOWN, "");
-
-                    return(token);
                 }
 
                 break;
