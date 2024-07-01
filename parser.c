@@ -297,9 +297,10 @@ void print_parse_tree(ROOT *root)
  */
 void parser()
 {
-    ROOT *root = create_root_node(NULL);
-    ROOT *current = (ROOT *)root->child;
+    ROOT *current;
 
+    root = create_root_node(NULL);
+    current = (ROOT *)root->child;
     while (TokenIndex < TokenCount)
     {
         if (strcmp(tokens[TokenIndex].value, "int") == 0 && strcmp(tokens[TokenIndex + 1].value, "main") == 0)
