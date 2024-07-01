@@ -15,7 +15,7 @@ int main()
     parse_return();
     ExpressionNode *tmp = root;
     TokenNode *tmp_node;
-    while (tmp->child != NULL)
+    while (tmp != NULL)
     {
         printf("%s -> ", tmp->token.value);
         tmp_node = tmp->next;
