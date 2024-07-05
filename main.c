@@ -3,6 +3,7 @@
 Token tokens[MAX_SIZE];
 int TokenCount = 0;
 int TokenIndex = 0;
+ROOT *root;
 
 /**
  * 
@@ -10,20 +11,27 @@ int TokenIndex = 0;
  */
 int main()
 {
-	FILE *file;
+    FILE *file;
 
-	file = fopen("test.c", "r");
+    file = fopen("test.c", "r");
 
-	lexer(file);
+    lexer(file);
 
-	for (int i = 0; i < TokenCount; i++)
-	{
-		printf("%s\n", tokens[i].value);
-	}
+    for (int i = 0; i < TokenCount; i++)
+    {
+        printf("%s\n", tokens[i].value);
+    }
     
-	fclose(file);
+    fclose(file);
 
-	parser();
+    parser();
 
-	return(0);
+    /**free(root);
+*/
+    /**for (int i < 0; i < TokenCount; i++)
+    {
+        free(tokens[i].value);
+    }*/
+
+    return(0);
 }

@@ -51,8 +51,43 @@ ROOT *create_root_node(ExpressionNode *child)
     return(node);
 }
 
+void free_expression_node(ExpressionNode *node)
+{
+    if (node == NULL)
+    {
+        return;
+    }
 
-void parse_return (ROOT *Root, ROOT *current)
+    free_expression_node(node->child);
+    free_expression_node(node->next);
+    free(node);
+}
+
+void free_token_node(TokenNode *node)
+{
+    if (node == NULL)
+    {
+        return;
+    }
+
+    free_token_node(node->next);
+    free(node);
+}
+
+void free_root_node(ROOT *root)
+{
+    if (root == NULL)
+    {
+        return;
+    }
+
+    free_expression_node(root->child);
+
+    free(root);
+}
+
+
+void parse_return (ExpressionNode **current)
 {
 
     if (TokenIndex >= TokenCount)
@@ -83,7 +118,7 @@ void parse_return (ROOT *Root, ROOT *current)
 
             if (TokenIndex >= TokenCount)
             {
-                fprintf(stderr, "Error: Unexpected end of tokens :')\n");
+                fprintf(stderr, "Error: Unexpected end of tokens :') \n");
                 return;
             }
 
@@ -96,7 +131,7 @@ void parse_return (ROOT *Root, ROOT *current)
 
                 if (TokenIndex >= TokenCount)
                 {
-                    fprintf(stderr, "Error: Unexpected end of tokens :')\n");
+                    fprintf(stderr, "Error: Unexpected end of tokens :') \n");
                     return;
                 }
 
@@ -109,7 +144,7 @@ void parse_return (ROOT *Root, ROOT *current)
 
                     if (TokenIndex >= TokenCount)
                     {
-                        fprintf(stderr, "Error: Unexpected end of tokens :')\n");
+                        fprintf(stderr, "Error: Unexpected end of tokens :') \n");
                         return;
                     }
 
@@ -122,16 +157,13 @@ void parse_return (ROOT *Root, ROOT *current)
                         openParen->next = val;
                         val->next = closeParen;
                         closeParen->next = scolon;
-                        ret->next = (ExpressionNode *) openParen;
-                        Root->child = ret;
-                        current->child = ret->child;
+                        ret->next = (ExpressionNode *)openParen;
+
+                        (*current)->child = ret;
+                        *current = (*current)->child;
 
                         printf("Correct Return Statment horaaaaay!!\n");
-                        free(scolon);
-                        free(closeParen);
-                        free(val);
-                        free(openParen);
-                        free(ret);
+                        
                         return;
                     }
                     else
@@ -141,29 +173,30 @@ void parse_return (ROOT *Root, ROOT *current)
                 }
                 else
                 {
-                    fprintf(stderr,"Syntax Error: Expected )\n");
+                    fprintf(stderr,"Syntax Error: Expected ) \n");
                 }
             }
             else
             {
+                printf("toke value: %s", tokens[TokenIndex].value);
                 fprintf(stderr,"Syntax Error: Expected an Integer\n");
             }
         }
         else
         {
-            fprintf(stderr,"Syntax Error: Expected (\n");
+            fprintf(stderr,"Syntax Error: Expected ( \n");
         }
     }
 
-    fprintf(stderr, "Syntax Error: Invalid Return Statment :')\n");
+    fprintf(stderr, "Syntax Error: Invalid Return Statment :') \n");
 }
 
 
-void parse_main(ROOT *Root, ROOT *current)
+void parse_main(ExpressionNode **current)
 {
     if (TokenIndex >= TokenCount)
     {
-        fprintf(stderr, "Error: Reached end of tokens :')\n");
+        fprintf(stderr, "Error: Reached end of tokens :') \n");
         return;
     }
 
@@ -176,7 +209,7 @@ void parse_main(ROOT *Root, ROOT *current)
 
         if (TokenIndex >= TokenCount)
         {
-            fprintf(stderr, "Error: Reached end of tokens :')\n");
+            fprintf(stderr, "Error: Reached end of tokens :') \n");
             return;
         }
 
@@ -189,7 +222,7 @@ void parse_main(ROOT *Root, ROOT *current)
 
             if (TokenIndex >= TokenCount)
             {
-                fprintf(stderr, "Error: Reached end of tokens :')\n");
+                fprintf(stderr, "Error: Reached end of tokens :') \n");
                 return;
             }
 
@@ -202,7 +235,7 @@ void parse_main(ROOT *Root, ROOT *current)
 
                 if (TokenIndex >= TokenCount)
                 {
-                    fprintf(stderr, "Error: Reached end of tokens :')\n");
+                    fprintf(stderr, "Error: Reached end of tokens :') \n");
                     return;
                 }
 
@@ -215,7 +248,7 @@ void parse_main(ROOT *Root, ROOT *current)
 
                     if (TokenIndex >= TokenCount)
                     {
-                        fprintf(stderr, "Error: Reached end of tokens :')\n");
+                        fprintf(stderr, "Error: Reached end of tokens :') \n");
                         return;
                     }
 
@@ -229,31 +262,27 @@ void parse_main(ROOT *Root, ROOT *current)
                         openParen->next = closeParen;
                         closeParen->next = openCurly;
                         INT->next = (ExpressionNode *)MAIN;
-                        Root->child = INT;
-                        current->child = INT->child;
+
+                        (*current)->child = INT;
+                        *current = (*current)->child;
 
                         printf("Correct main Statment horaaaaay!!\n");
 
-                        free(openCurly);
-                        free(closeParen);
-                        free(openParen);
-                        free(MAIN);
-                        free(INT);
                         return;
                     }
                     else
                     {
-                        fprintf(stderr,"Syntax Error: Expected {\n");
+                        fprintf(stderr,"Syntax Error: Expected { \n");
                     }
                 }
                 else
                 {
-                    fprintf(stderr,"Syntax Error: Expected )\n");
+                    fprintf(stderr,"Syntax Error: Expected ) \n");
                 }
             }
             else
             {
-                fprintf(stderr,"Syntax Error: Expected (\n");
+                fprintf(stderr,"Syntax Error: Expected ( \n");
             }
         }
         else
@@ -261,6 +290,7 @@ void parse_main(ROOT *Root, ROOT *current)
             fprintf(stderr,"Syntax Error: Expected main\n");
         }
     }
+
 }
 
 
@@ -297,23 +327,24 @@ void print_parse_tree(ROOT *root)
  */
 void parser()
 {
-    ROOT *current;
-
     root = create_root_node(NULL);
-    current = (ROOT *)root->child;
+    ExpressionNode *current = (ExpressionNode *)root;
+
     while (TokenIndex < TokenCount)
     {
         if (strcmp(tokens[TokenIndex].value, "int") == 0 && strcmp(tokens[TokenIndex + 1].value, "main") == 0)
         {
-            parse_main(root, current);
+            parse_main(&current);
         }
         else if (strcmp(tokens[TokenIndex].value, "return") == 0)
         {
-            parse_return(root, current);
+            parse_return(&current);
         }
 
         TokenIndex++;
     }
 
-    print_parse_tree(root);   
+    print_parse_tree(root); 
+
+    free_root_node(root);
 }
