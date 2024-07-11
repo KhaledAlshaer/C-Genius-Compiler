@@ -58,8 +58,8 @@ void free_expression_node(ExpressionNode *node)
         return;
     }
 
-    free_expression_node(node->child);
     free_expression_node(node->next);
+    free_expression_node(node->child);
     free(node);
 }
 
@@ -344,7 +344,5 @@ void parser()
         TokenIndex++;
     }
 
-    print_parse_tree(root); 
-
-    free_root_node(root);
+    print_parse_tree(root);
 }

@@ -42,7 +42,7 @@ int main()
 
     generate(file);
 
-    free(root);
+    free_root_node(root);
 
     /**for (int i < 0; i < TokenCount; i++)
     {
