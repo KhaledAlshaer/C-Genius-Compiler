@@ -1,6 +1,6 @@
 #include "header.h"
 /**
- * generate - Generates assembly code from the AST
+ * generat - Generates assembly code from the AST
  *
  * Description:
  * This function opens a file named "as.s" for writing and traverses the AST
@@ -12,7 +12,6 @@
  */
 void generate(FILE *file)
 {
-    file = fopen("as.s", "w");
     ExpressionNode *cur = root->child;
     while (cur != NULL)
     {
@@ -66,9 +65,4 @@ void generate_return(ExpressionNode *cur, FILE *f)
 \tsyscall\n\
 ",
             cur->next->next->token.value);
-}
-
-int main()
-{
-    generat();
 }
