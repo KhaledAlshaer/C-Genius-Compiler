@@ -13,7 +13,7 @@ int main()
 {
     FILE *file;
 
-    file = fopen("test", "r");
+    file = fopen("test.c", "r");
 
     if (file == NULL)
     {

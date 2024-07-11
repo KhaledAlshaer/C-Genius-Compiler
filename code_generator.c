@@ -17,11 +17,11 @@ void generate(FILE *file)
     {
         if (cur->token.type == TOKEN_INT && cur->next != NULL && cur->next->token.type == TOKEN_MAIN)
         {
-            generat_main(cur, file);
+            generate_main(cur, file);
         }
         else if (cur->token.type == TOKEN_RETURN)
         {
-            generat_return(cur, file);
+            generate_return(cur, file);
         }
         cur = cur->child;
     }
@@ -63,6 +63,6 @@ void generate_return(ExpressionNode *cur, FILE *f)
 \tmov rax, 60\n\
 \tmov rdi, %s\n\
 \tsyscall\n\
-",
+", 
             cur->next->next->token.value);
 }
