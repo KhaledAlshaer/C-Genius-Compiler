@@ -1,6 +1,6 @@
 #include "header.h"
 /**
- * generat - Generates assembly code from the AST
+ * generate - Generates assembly code from the AST
  *
  * Description:
  * This function opens a file named "as.s" for writing and traverses the AST
@@ -37,7 +37,7 @@ void generate(FILE *file)
  *
  * Return: This function does not return a value.
  */
-void generat_main(ExpressionNode *cur, FILE *f)
+void generate_main(ExpressionNode *cur, FILE *f)
 {
 
     fprintf(f, "\
@@ -58,7 +58,7 @@ main:\n\
  *
  * Return: This function does not return a value.
  */
-void generat_return(ExpressionNode *cur, FILE *f)
+void generate_return(ExpressionNode *cur, FILE *f)
 {
     fprintf(f, "\
 \tmov rax, 60\n\
