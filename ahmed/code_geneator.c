@@ -28,12 +28,12 @@ void generat(ExpressionNode *root, char *file_name)
         }
         cur = cur->child;
     }
-    system("as --64 -o as.o as.s");
-    char *command[256];
-    sprintf(command, "gcc -o %s as.o", file_name);
-    
-    system(command);
-    // system("rm as.s as.o");
+    // system("gcc -o r as.s");
+    // char *command[256];
+    // sprintf(command, "gcc -o %s as.o", file_name);
+
+    // system(command);
+    // // system("rm as.s as.o");
 }
 /**
  * generat_main - Generates assembly code for the main function

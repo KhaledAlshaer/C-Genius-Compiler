@@ -86,7 +86,7 @@ ExpressionNode *parse_return(ExpressionNode **current)
     if (TokenIndex >= TokenCount)
     {
         fprintf(stderr, "Error: Reached end of tokens :')\n");
-        return;
+        return NULL;
     }
 
     if (strcmp(tokens[TokenIndex].value, "return") == 0)
@@ -99,7 +99,7 @@ ExpressionNode *parse_return(ExpressionNode **current)
         if (TokenIndex >= TokenCount)
         {
             fprintf(stderr, "Error: Unexpected end of tokens :')\n");
-            return;
+            return NULL;
         }
 
         if (strcmp(tokens[TokenIndex].value, "(") == 0)
@@ -112,7 +112,7 @@ ExpressionNode *parse_return(ExpressionNode **current)
             if (TokenIndex >= TokenCount)
             {
                 fprintf(stderr, "Error: Unexpected end of tokens :') \n");
-                return;
+                return NULL;
             }
 
             if (tokens[TokenIndex].type == TOKEN_LITERAL_INT)
@@ -125,7 +125,7 @@ ExpressionNode *parse_return(ExpressionNode **current)
                 if (TokenIndex >= TokenCount)
                 {
                     fprintf(stderr, "Error: Unexpected end of tokens :') \n");
-                    return;
+                    return NULL;
                 }
 
                 if (strcmp(tokens[TokenIndex].value, ")") == 0)
@@ -138,7 +138,7 @@ ExpressionNode *parse_return(ExpressionNode **current)
                     if (TokenIndex >= TokenCount)
                     {
                         fprintf(stderr, "Error: Unexpected end of tokens :') \n");
-                        return;
+                        return NULL;
                     }
 
                     if (strcmp(tokens[TokenIndex].value, ";") == 0)
@@ -158,7 +158,7 @@ ExpressionNode *parse_return(ExpressionNode **current)
 
                         // printf("Correct Return Statment horaaaaay!!\n");
 
-                        return;
+                        return NULL;
                     }
                     else
                     {
@@ -190,7 +190,7 @@ ExpressionNode *parse_main(ExpressionNode **current)
     if (TokenIndex >= TokenCount)
     {
         fprintf(stderr, "Error: Reached end of tokens :') \n");
-        return;
+        return NULL;
     }
 
     if (strcmp(tokens[TokenIndex].value, "int") == 0)
@@ -203,7 +203,7 @@ ExpressionNode *parse_main(ExpressionNode **current)
         if (TokenIndex >= TokenCount)
         {
             fprintf(stderr, "Error: Reached end of tokens :') \n");
-            return;
+            return NULL;
         }
 
         if (strcmp(tokens[TokenIndex].value, "main") == 0)
@@ -216,7 +216,7 @@ ExpressionNode *parse_main(ExpressionNode **current)
             if (TokenIndex >= TokenCount)
             {
                 fprintf(stderr, "Error: Reached end of tokens :') \n");
-                return;
+                return NULL;
             }
 
             if (strcmp(tokens[TokenIndex].value, "(") == 0)
@@ -229,7 +229,7 @@ ExpressionNode *parse_main(ExpressionNode **current)
                 if (TokenIndex >= TokenCount)
                 {
                     fprintf(stderr, "Error: Reached end of tokens :') \n");
-                    return;
+                    return NULL;
                 }
 
                 if (strcmp(tokens[TokenIndex].value, ")") == 0)
@@ -242,7 +242,7 @@ ExpressionNode *parse_main(ExpressionNode **current)
                     if (TokenIndex >= TokenCount)
                     {
                         fprintf(stderr, "Error: Reached end of tokens :') \n");
-                        return;
+                        return NULL;
                     }
 
                     if (strcmp(tokens[TokenIndex].value, "{") == 0)
@@ -261,8 +261,6 @@ ExpressionNode *parse_main(ExpressionNode **current)
                         return INT;
 
                         // printf("Correct main Statment horaaaaay!!\n");
-
-                        return;
                     }
                     else
                     {
@@ -286,35 +284,35 @@ ExpressionNode *parse_main(ExpressionNode **current)
     }
 }
 
-void print_expression_tree(ExpressionNode *node, int depth)
-{
-    if (node == NULL)
-    {
-        return;
-    }
+// void print_expression_tree(ExpressionNode *node, int depth)
+// {
+//     if (node == NULL)
+//     {
+//         return NULL;
+//     }
 
-    for (int i = 0; i < depth; ++i)
-    {
-        printf("  ");
-    }
-    printf("- Token: %s\n", node->token.value);
+//     for (int i = 0; i < depth; ++i)
+//     {
+//         printf("  ");
+//     }
+//     printf("- Token: %s\n", node->token.value);
 
-    print_expression_tree(node->child, depth + 1);
+//     print_expression_tree(node->child, depth + 1);
 
-    // print_expression_tree(node->next, depth);
-}
+//     // print_expression_tree(node->next, depth);
+// }
 
-void print_parse_tree(ROOT *root)
-{
-    if (root == NULL)
-    {
-        printf("Parse tree is empty.\n");
-        return;
-    }
+// void print_parse_tree(ROOT *root)
+// {
+//     if (root == NULL)
+//     {
+//         printf("Parse tree is empty.\n");
+//         return NULL;
+//     }
 
-    printf("Parse Tree:\n");
-    print_expression_tree(root->child, 0);
-}
+//     printf("Parse Tree:\n");
+//     print_expression_tree(root->child, 0);
+// }
 
 /**
  * parser - The Main Parser Function

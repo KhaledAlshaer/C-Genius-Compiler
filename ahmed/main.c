@@ -10,32 +10,32 @@ int TokenIndex = 0;
  */
 int main(int argc, char *argv[])
 {
-    if (argc != 2)
-    {
-        fprintf(stderr, "Enter one file\n");
-    }
+	if (argc != 2)
+	{
+		fprintf(stderr, "Enter one file\n");
+	}
 
-    if (strstr(argv[1], ".c") == NULL)
-    {
-        fprintf(stderr, "extension not .c\n");
-    }
+	if (strstr(argv[1], ".c") == NULL)
+	{
+		fprintf(stderr, "extension is not .c\n");
+	}
 
-    FILE *file;
+	FILE *file;
 
-    file = fopen(argv[1], "r");
+	file = fopen(argv[1], "r");
 
-    if (file == NULL)
-    {
-        fprintf(stderr, "file not found\n");
-    }
+	if (file == NULL)
+	{
+		fprintf(stderr, "file not found\n");
+	}
 
-    lexer(file);
+	lexer(file);
 
-    fclose(file);
+	fclose(file);
 
-    ExpressionNode *root = parser();
+	ExpressionNode *root = parser();
 
-    generat(root, argv[1]);
+	generat(root, argv[1]);
 
-    return (0);
+	return (0);
 }
