@@ -55,6 +55,7 @@ void lexer(FILE *file);
 void parse_return (ExpressionNode **child);
 void parse_main(ExpressionNode **child);
 void parser ();
+void generate(FILE *file);
 void add_token(TokenType type, const char *val);
 ExpressionNode *create_expression_node(Token token, ExpressionNode *child, ExpressionNode *next);
 TokenNode *create_token_node(Token token, TokenNode *next);
@@ -64,5 +65,7 @@ void print_parse_tree(ROOT *root);
 void free_expression_node(ExpressionNode *node);
 void free_token_node(TokenNode *node);
 void free_root_node(ROOT *root);
+void generate_main(ExpressionNode *cur, FILE *f);
+void generate_return(ExpressionNode *cur, FILE *f);
 
 #endif

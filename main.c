@@ -15,6 +15,12 @@ int main()
 
     file = fopen("test.c", "r");
 
+    if (file == NULL)
+    {
+        fprintf(stderr, "Error opening file for reading\n");
+        return(1);
+    }
+
     lexer(file);
 
     for (int i = 0; i < TokenCount; i++)
@@ -26,8 +32,18 @@ int main()
 
     parser();
 
-    /**free(root);
-*/
+    file = fopen("as.s", "w");
+
+    if (file == NULL)
+    {
+        fprintf(stderr, "Error opening file for writing\n");
+        return(1);
+    }
+
+    generate(file);
+
+    free_root_node(root);
+
     /**for (int i < 0; i < TokenCount; i++)
     {
         free(tokens[i].value);
