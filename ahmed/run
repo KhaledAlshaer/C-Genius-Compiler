@@ -1,2 +1,0 @@
-gcc parser.c lexer.c main.c -o out
-./out
