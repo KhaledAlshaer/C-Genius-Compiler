@@ -37,7 +37,7 @@ typedef struct ExpressionNode
 {
     Token token;
     struct ExpressionNode *child;
-    struct ExpressionNode *next;
+    struct TokenNode *next;
 } ExpressionNode;
 
 typedef struct RootNode 
@@ -52,12 +52,12 @@ extern int TokenIndex;
 extern ROOT *root;
 
 void lexer(FILE *file);
-void parse_return (ExpressionNode **child);
-void parse_main(ExpressionNode **child);
-void parser ();
-void generate(FILE *file);
+ExpressionNode *parse_return(ExpressionNode **current);
+ExpressionNode *parse_main(ExpressionNode **current);
+ExpressionNode *parser();
+void generate(ExpressionNode *root, char *file_name);
 void add_token(TokenType type, const char *val);
-ExpressionNode *create_expression_node(Token token, ExpressionNode *child, ExpressionNode *next);
+ExpressionNode *create_expression_node(Token token, ExpressionNode *child, TokenNode *next);
 TokenNode *create_token_node(Token token, TokenNode *next);
 ROOT *create_root_node(ExpressionNode *child);
 void print_expression_tree(ExpressionNode *node, int depth);

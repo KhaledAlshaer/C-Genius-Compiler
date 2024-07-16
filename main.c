@@ -3,51 +3,42 @@
 Token tokens[MAX_SIZE];
 int TokenCount = 0;
 int TokenIndex = 0;
-ROOT *root;
 
 /**
- * 
- * 
+ *
+ *
  */
-int main()
+int main(int argc, char *argv[])
 {
-    FILE *file;
+	if (argc != 2)
+	{
+		fprintf(stderr, "Enter one file\n");
+		return (1);
+	}
 
-    file = fopen("test.c", "r");
+	if (strstr(argv[1], ".c") == NULL)
+	{
+		fprintf(stderr, "extension is not .c\n");
+		return (1);
+	}
 
-    if (file == NULL)
-    {
-        fprintf(stderr, "Error opening file for reading\n");
-        return(1);
-    }
+	FILE *file;
 
-    lexer(file);
+	file = fopen(argv[1], "r");
 
-    for (int i = 0; i < TokenCount; i++)
-    {
-        printf("%s\n", tokens[i].value);
-    }
-    
-    fclose(file);
+	if (file == NULL)
+	{
+		fprintf(stderr, "file not found\n");
+		return (1);
+	}
 
-    parser();
+	lexer(file);
 
-    file = fopen("as.s", "w");
+	fclose(file);
 
-    if (file == NULL)
-    {
-        fprintf(stderr, "Error opening file for writing\n");
-        return(1);
-    }
+	ExpressionNode *root = parser();
 
-    generate(file);
+	generate(root, argv[1]);
 
-    free_root_node(root);
-
-    /**for (int i < 0; i < TokenCount; i++)
-    {
-        free(tokens[i].value);
-    }*/
-
-    return(0);
+	return (0);
 }

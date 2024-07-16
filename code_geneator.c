@@ -1,6 +1,6 @@
 #include "header.h"
 /**
- * generat - Generates assembly code from the AST
+ * generate - Generates assembly code from the AST
  *
  * Description:
  * This function opens a file named "as.s" for writing and traverses the AST
@@ -10,24 +10,34 @@
  *
  * Return: This function does not return a value.
  */
-void generate(FILE *file)
+void generate(ExpressionNode *root, char *file_name)
 {
-    ExpressionNode *cur = root->child;
-    while (cur != NULL)
-    {
-        if (cur->token.type == TOKEN_INT && cur->next != NULL && cur->next->token.type == TOKEN_MAIN)
-        {
-            generate_main(cur, file);
-        }
-        else if (cur->token.type == TOKEN_RETURN)
-        {
-            generate_return(cur, file);
-        }
-        cur = cur->child;
-    }
+	file_name[strlen(file_name) - 2] = '\0';
+
+	FILE *file = fopen("as.s", "w");
+	ExpressionNode *cur = root->child;
+	while (cur != NULL)
+	{
+		if (cur->token.type == TOKEN_INT && cur->next != NULL && cur->next->token.type == TOKEN_MAIN)
+		{
+			generate_main(cur, file);
+		}
+		else if (cur->token.type == TOKEN_RETURN)
+		{
+			generate_return(cur, file);
+		}
+		cur = cur->child;
+	}
+	fclose(file);
+	system("as -o as.o as.s");
+	char command[256];
+	sprintf(command, "gcc -o %s as.o", file_name);
+
+	system(command);
+	system("rm as.s as.o");
 }
 /**
- * generat_main - Generates assembly code for the main function
+ * generate_main - Generates assembly code for the main function
  * @cur: Pointer to the current expression node
  * @f: Pointer to the file where the assembly code will be written
  *
@@ -40,13 +50,14 @@ void generate_main(ExpressionNode *cur, FILE *f)
 {
 
     fprintf(f, "\
+.section .text\n\
 .global main\n\
 .intel_syntax noprefix\n\
-main:\n\
+\nmain:\n\
 ");
 }
 /**
- * generat_return - Generates assembly code for a return statement
+ * generate_return - Generates assembly code for a return statement
  * @cur: Pointer to the current expression node
  * @f: Pointer to the file where the assembly code will be written
  *
@@ -63,6 +74,6 @@ void generate_return(ExpressionNode *cur, FILE *f)
 \tmov rax, 60\n\
 \tmov rdi, %s\n\
 \tsyscall\n\
-", 
+",
             cur->next->next->token.value);
 }
